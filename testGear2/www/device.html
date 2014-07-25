@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<style>
+		body {
+			margin: 10px 15px;
+			background-color: rgb(255,255,255);
+		}
+		h1 {
+			font-weight: bold;
+			color: black;
+		}
+		p {
+			font-size: 120%;
+		}
+		.div-spacing {
+			margin: 20px 0px;
+		}
+		</style>                 
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.3.css" />  
+        <style>
+           /**** Trying to style h1 and paragraph *******/
+           .myHeader {
+                 color:#cc0000;
+           }
+ 
+           .myParagraph {
+                color:#333;
+		overflow:show;
+		text-overflow:clip;
+		white-space:normal;
+		height:28px;
+		margin-bottom:0px;
+           }
+        </style>
+    </head>
+    <body>
+        <div data-role="page" id="page2">
+            <div>
+			<h1 data-role="none">Device Details Page</h1>
+            </div>
+            <div class="div-spacing" data-role="none">
+            </div>
+            <img id="loadingImage" src="ajax-loader.gif" style="visibility:hidden;display: block;margin-left: auto;margin-right: auto;"/>
+            <h1 align="center" id="hostName" ></h1>
+            <h2 align="center" id="osName"></h2>
+            <p align="center" id="totalIssue"></p>
+            
+            <div>
+            <div data-role="content">
+            <ul id="DevicesDetails" data-role="listview" data-inset="true" data-theme="a" data-dividertheme="c">
+		<li data-role="list-divider">Devices Details</li>                
+            </ul>
+            </div>   
+            </div>
+            
+            <script type="text/javascript">
+            $(document).one('pageshow', '#page2', function () {
+                var fullURL = document.URL;
+                var idIndex = fullURL.search("id=");
+                var tokenIndex = fullURL.search("&token=");
+                var hwid = fullURL.substring(idIndex+3,tokenIndex);
+                var token = fullURL.substring(tokenIndex+7, fullURL.length);
+                
+                var urlQueryDevice = "https://gears.opswat.com/o/api/v2/devices/";
+                urlQueryDevice += hwid;
+                $.ajax({
+                    type: "GET",
+                    url: urlQueryDevice,
+                    data: {                     
+                        "access_token" : token
+                    },
+                    dataType: "json",
+
+                    success: function (data) {
+                        var DevicesDetails = document.getElementById('DevicesDetails');
+                        var tagHostName = document.getElementById("hostName");
+                        var tagOsName = document.getElementById("osName");
+                        var displayImage = document.getElementById("loadingImage");    
+                        var tagIssue = document.getElementById("totalIssue");
+                        
+                        var total_issue = data.total_issue;
+                        var hostname = data.hostname;
+                        var machine_type = data.machine_type;
+                        var os_info = data.os_info.name;
+                        tagHostName.innerHTML = hostname;
+                        tagOsName.innerHTML = os_info;
+                        tagIssue.innerHTML = "This device have " + total_issue + " issues";
+                        switch (machine_type) {
+                            case "vm":
+                                displayImage.src = "icon/VMB.png";
+                                break;
+                            case "server":
+                                displayImage.src = "icon/SB.png";
+                                break;
+                            case "laptop":
+                                displayImage.src = "icon/LB.png";
+                                break;
+                            default:
+                                displayImage.src = "icon/DB.png";
+                                break;
+                        }
+                        
+                        displayImage.style.visibility='visible';
+                        
+                        var applications = data.applications;
+                        var iconFile = "";
+                    
+                        $.each(applications, function(){
+                           var category = this.category;
+                           switch (category) {
+                               case "Encryption": 
+                                   iconFile = "EC.png";      
+                                   break;
+                               case "Firewall":
+                                   iconFile = "FW.png";
+                                   break;
+                               case "Antiphishing":
+                                   iconFile = "AP.png";
+                                   break;
+                               case "3rd Party Patch Mgmt.":
+                                   iconFile = "3P.png";
+                                   break;
+                               case "Antivirus":
+                                   iconFile = "AV.png";
+                                   break;
+                               case "Backup":
+                                   iconFile = "BC.png";
+                                   break;
+                               case "Hard Drive":
+                                   iconFile = "HDD.png";
+                                   break;
+                               case "Public File Sharing":
+                                   iconFile = "PFS.png";
+                                   break;
+                               case "User Authentication":
+                                   iconFile = "";
+                                   break;
+                               default: //OSinfo                                   
+                                   iconFile = "OS.png";
+                                   break;
+                           }
+                                                  
+                            //we may have many apps for one category, so query them all if have
+                            if (iconFile !== "")    //we leave the User Authentication out
+                            {
+                                var apps = this.apps;
+                                $.each(apps, function(){
+                                    var appVersion = this.version;
+                                    var appName = this.name;
+                                    if (category === "Hard Drive")
+                                        appName += " : " + this.health[0].status;
+
+                                    var entry = document.createElement('li');
+                                    var innerHTML = "<a href=\"#\"> <img src=\"icon/";
+                                    innerHTML += iconFile + "\"> <h1> " + category + " </h1>" + "<h2 align=\"center\">" + appName + " </h2>" + "<p align=\"center\">" + appVersion + "</p></a>";
+                                    entry.innerHTML = innerHTML;                        
+                                    DevicesDetails.appendChild(entry);
+                                });
+                            }                            
+                        });
+                    },
+
+                    error: function (data) {
+                        alert(JSON.stringify(data));
+                    }
+                 });
+                
+                
+                
+            });
+            </script>
+            
+        </div>    
+        <script type="text/javascript" src="cordova.js"></script>        
+            <script type="text/javascript" src="js/jquery-2.1.1.js"></script>
+            <script type="text/javascript" src="js/jquery.mobile.min.js"></script>
+            <script type="text/javascript" src="js/jquery.mobile-1.4.3.js"></script>
+            <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    </body>
+</html>
