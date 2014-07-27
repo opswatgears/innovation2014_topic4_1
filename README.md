@@ -19,5 +19,5 @@ https://gears.opswat.com/o/api/v2/devices.json	        Use this query to list de
 
 https://gears.opswat.com/o/api/v2/devices/:id          	Use this query to list devices by ID.
 
-In addition, this project was web-based and built based on HTML, CSS and Javascript. Read the details below.
+In addition, this project was web-based and built based on HTML, CSS and Javascript. Read the details in Documentation
 
