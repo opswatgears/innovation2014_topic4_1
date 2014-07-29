@@ -6,7 +6,7 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>This is page for devices have issues</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
@@ -45,7 +45,7 @@ and open the template in the editor.
         </style>
     </head>
     <body>
-        <div data-role="page" id="page2" style="background-color: #81F7F3">
+        <div data-role="page" id="page3" style="background-color: #FA8258">
             <div>
 			<h1 data-role="none">Device Details Page</h1>
             </div>
@@ -65,7 +65,7 @@ and open the template in the editor.
             </div>
             
             <script type="text/javascript">
-            $(document).one('pageshow', '#page2', function () {                
+            $(document).one('pageshow', '#page3', function () {                
                 
                 //document.body.style.backgroundColor = "#2EFE2E";                
                 var fullURL = document.URL;
@@ -85,6 +85,7 @@ and open the template in the editor.
                     dataType: "json",
 
                     success: function (data) {
+                        //alert(JSON.stringify(data));
                         var DevicesDetails = document.getElementById('DevicesDetails');
                         var tagHostName = document.getElementById("hostName");
                         var tagOsName = document.getElementById("osName");

@@ -56,8 +56,8 @@ C:\Topic3\innovation2014_topic4_1\Source\Gear Go\platforms\android\assets\_where
 C:\Topic3\innovation2014_topic4_1\Source\Gear Go\platforms\android\assets\www\cordova.js \
 C:\Topic3\innovation2014_topic4_1\Source\Gear Go\platforms\android\assets\www\cordova_plugins.js \
 C:\Topic3\innovation2014_topic4_1\Source\Gear Go\platforms\android\assets\www\css \
-C:\Topic3\innovation2014_topic4_1\Source\Gear Go\platforms\android\assets\www\db \
 C:\Topic3\innovation2014_topic4_1\Source\Gear Go\platforms\android\assets\www\device.html \
+C:\Topic3\innovation2014_topic4_1\Source\Gear Go\platforms\android\assets\www\deviceHaveIssues.html \
 C:\Topic3\innovation2014_topic4_1\Source\Gear Go\platforms\android\assets\www\icon \
 C:\Topic3\innovation2014_topic4_1\Source\Gear Go\platforms\android\assets\www\img \
 C:\Topic3\innovation2014_topic4_1\Source\Gear Go\platforms\android\assets\www\index.html \

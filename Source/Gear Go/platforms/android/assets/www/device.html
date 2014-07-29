@@ -14,7 +14,6 @@ and open the template in the editor.
 		<style>
 		body {
 			margin: 10px 15px;
-			background-color: rgb(255,255,255);
 		}
 		h1 {
 			font-weight: bold;
@@ -46,7 +45,7 @@ and open the template in the editor.
         </style>
     </head>
     <body>
-        <div data-role="page" id="page2">
+        <div data-role="page" id="page2" style="background-color: #81F7F3">
             <div>
 			<h1 data-role="none">Device Details Page</h1>
             </div>
@@ -66,7 +65,9 @@ and open the template in the editor.
             </div>
             
             <script type="text/javascript">
-            $(document).one('pageshow', '#page2', function () {
+            $(document).one('pageshow', '#page2', function () {                
+                
+                //document.body.style.backgroundColor = "#2EFE2E";                
                 var fullURL = document.URL;
                 var idIndex = fullURL.search("id=");
                 var tokenIndex = fullURL.search("&token=");
@@ -91,6 +92,14 @@ and open the template in the editor.
                         var tagIssue = document.getElementById("totalIssue");
                         
                         var total_issue = data.total_issue;
+                        
+                        //var myPage = document.getElementById('page2');
+                        /*
+                        if (total_issue === 0)
+                            $('body').css(background-color,"#F5DA81" );
+                        else
+                            $('body').css(background-color,"#81F7F3" );
+                         */
                         var hostname = data.hostname;
                         var machine_type = data.machine_type;
                         var os_info = data.os_info.name;

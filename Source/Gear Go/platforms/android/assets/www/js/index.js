@@ -2,6 +2,7 @@ var event = "";
 var code = "";
 var win = "";
 var token = "";
+var have_issue = true;
 
 //for ajax query
 var callbackUrl = "http://example.com";
@@ -10,12 +11,13 @@ var tokenURL  = "https://gears.opswat.com/o/oauth/token";
 var accountURL = "https://gears.opswat.com/o/api/v2/account";
 
 //for login info and authorize, insert your app client id and secret here
-var account_client_id = "M75BO8S79LGUFYBF3ZBNNBNJX5QO6IGN9TDALF4WL1RZU9B7";
-var account_client_secret = "MMGCIIQ8S4ZFTZXPKXSWESSEYRKKYWETNN9DPA4KUVCOTPOR";
+var account_client_id = "M62SGS3D6SG49131ULVDPVQ7PKXABGVCH5C4RBSAFZURGOKI";
+var account_client_secret = "86S6OGOLBOGV538919W6ES7EGWJR2IOVYPPNMWROE4X3BT2C";
 
 var devices_allow = "";
 var devices_used = "";
 var devices_have_issue = [];
+var array_hwid_have_issue = [];
 var count_issue = 0;
 var hwidToQuery = "";
 var listViewContent = "";
@@ -31,9 +33,15 @@ function dynamicEvent() {
     
    hwidToQuery = this.id;
    var urlPagetoChange = "device.html?";
-   urlPagetoChange += "id=" + hwidToQuery + "&token=" + token;
+   var urlPageHaveIssued = "deviceHaveIssues.html?";
    
-   $.mobile.changePage(urlPagetoChange, { transition: "slide" });  
+   urlPagetoChange += "id=" + hwidToQuery + "&token=" + token;
+   urlPageHaveIssued += "id=" + hwidToQuery + "&token=" + token;
+   var index = $.inArray(hwidToQuery, array_hwid_have_issue);
+   if (index === -1)
+      $.mobile.changePage(urlPagetoChange, { transition: "slide" });  
+   else
+      $.mobile.changePage(urlPageHaveIssued, { transition: "slide" });  
    
    var strQueryDevice = 'Get Infomation about devices have HWID: ' + hwidToQuery;
    window.plugins.toast.showLongCenter(strQueryDevice, function(a){console.log('toast success: ' + a);}, function(b){alert('toast error: ' + b);});
@@ -90,6 +98,8 @@ function apiFunction() {
                             default:
                                 break;
                         }
+                        if (total_issue > 0)
+                            hostname = hostname + " (Have " + total_issue.toString() + " issues)";
                         innerHTML += innerType + "\"> <h1> Machine Name : "  + hostname + " </h1><p align=\"center\">" + os_name + "</p></a>";
                         entry.innerHTML = innerHTML;
                         entry.className = "dynamic-link";
@@ -98,7 +108,10 @@ function apiFunction() {
                         entry.onclick = dynamicEvent;
                                                                        
                         if (total_issue > 0) //this device have issues
-                            devices_have_issue.push(json);   
+                        {
+                           devices_have_issue.push(json);   
+                           array_hwid_have_issue.push(hwid);
+                        }
                     });
                     //update the dashboard
                     document.getElementById('devicesHaveIssue').innerHTML =  devices_have_issue.length + " devices " + "Have Issues";                                     
